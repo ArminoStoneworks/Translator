@@ -10,6 +10,7 @@ Version 1.0 04/08/2024 @ 1:27pm MDT
 
 - Added Translators
 
-# Translator made by Armino / armino_ / ArminoStoneworks
+# Translator 
+Made by Armino / armino_ / ArminoStoneworks
 
 All Rights Reserved ©
