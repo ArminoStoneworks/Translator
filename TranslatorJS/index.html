@@ -4,31 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Language Translator</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
   </head>
 
   <body>
-    <h1>English to Jaramah/Zonrazeh Translator</h1>
+    <div class="container">
+      <h1>Language Translator</h1>
 
-    <label for="language">Choose a language:</label>
-    <select id="language">
-      <option value="Jaramah">Jaramah</option>
-      <option value="Zonrazeh">Zonrazeh</option>
-    </select>
+      <label for="fromLanguage">Translate from:</label>
+      <select id="fromLanguage">
+        <option value="English">English</option>
+        <option value="Jaramah">Jaramah</option>
+        <option value="Zonrazeh">Zonrazeh</option>
+      </select>
 
-    <br /><br />
+      <label for="toLanguage">Translate to:</label>
+      <select id="toLanguage">
+        <option value="English">English</option>
+        <option value="Jaramah">Jaramah</option>
+        <option value="Zonrazeh">Zonrazeh</option>
+      </select>
 
-    <label for="inputText">Enter English text:</label>
-    <textarea id="inputText" rows="4" cols="50"></textarea>
+      <label for="inputText">Enter text:</label>
+      <textarea id="inputText" rows="4" cols="50"></textarea>
 
-    <br /><br />
+      <button onclick="btnClicked()">Translate</button>
 
-    <button onclick="btnClicked()">Translate</button>
+      <h2>Translated Text:</h2>
+      <p id="translatedText"></p>
 
-    <h2>Translated Text:</h2>
-    <p id="translatedText"></p>
-
-    <h2>Text in Custom Script:</h2>
-    <p id="scriptText"></p>
+      <h2>Text in Custom Script:</h2>
+      <p id="scriptText"></p>
+    </div>
   </body>
 </html>

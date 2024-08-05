@@ -7,11 +7,13 @@ const irregularVerbs = {
   ate: "eated",
   slept: "sleeped",
   would: "willed",
+  found: "finded",
 };
 
 const customSuffixes = {
   Jaramah: {
     ing: "'am",
+    d: "'iy",
     ed: "'iyam",
     s: "'ah",
     es: "'uh",
@@ -23,6 +25,7 @@ const customSuffixes = {
   },
   Zonrazeh: {
     ing: "'am",
+    d: "'iy",
     ed: "'iyam",
     s: "'ah",
     es: "'uh",
@@ -104,28 +107,87 @@ function convertToScript(text) {
     .join("");
 }
 
+// Reverse mapping for custom script
+const reverseLanguageScript = Object.fromEntries(
+  Object.entries(languageScript).map(([key, value]) => [value, key])
+);
+
+function convertFromScript(scriptText) {
+  let result = "";
+  let buffer = "";
+  let possibleMatch = false;
+
+  // Iterate over each character in the script text
+  for (const char of scriptText) {
+    buffer += char;
+    possibleMatch = false;
+
+    for (const key in reverseLanguageScript) {
+      if (key.startsWith(buffer)) {
+        possibleMatch = true;
+        if (key === buffer) {
+          result += reverseLanguageScript[key];
+          buffer = "";
+          break;
+        }
+      }
+    }
+
+    // If there's no possible match, clear the buffer
+    if (!possibleMatch) {
+      result += buffer;
+      buffer = "";
+    }
+  }
+
+  // If there's any leftover buffer that wasn't matched, append it as-is
+  if (buffer) {
+    result += buffer;
+  }
+
+  return result.toLowerCase(); // Convert to lowercase to match with translationData
+}
+
+// Modified btnClicked function
 function btnClicked() {
-  const inputText = document.getElementById("inputText").value.toLowerCase();
-  const selectedLanguage = document.getElementById("language").value;
+  const inputText = document.getElementById("inputText").value;
+  const fromLanguage = document.getElementById("fromLanguage").value;
+  const toLanguage = document.getElementById("toLanguage").value;
+
+  // Detect if the input is in the custom script and convert it to standard text
+  const isCustomScript = Array.from(inputText).some(
+    (char) => reverseLanguageScript[char]
+  );
+  const standardizedInput = isCustomScript
+    ? convertFromScript(inputText)
+    : inputText.toLowerCase();
 
   let translatedText = "";
-  const words = inputText.split(" ");
+  const words = standardizedInput.split(" ");
 
   for (let i = 0; i < words.length; i++) {
     let word = words[i];
 
-    // Check if the word is an article and the selected language is Zonrazeh
-    if (selectedLanguage === "Zonrazeh" && articles[word]) {
+    // Check if the word is an article and the from language is English, and translating to Zonrazeh
+    if (
+      fromLanguage === "English" &&
+      toLanguage === "Zonrazeh" &&
+      articles[word]
+    ) {
       const nextWord = words[i + 1];
       if (nextWord) {
         // Translate the next word and attach the article as a suffix for Zonrazeh
-        const translatedNextWord = translateWord(nextWord, selectedLanguage);
+        const translatedNextWord = translateWord(
+          nextWord,
+          fromLanguage,
+          toLanguage
+        );
         translatedText += translatedNextWord + articles[word] + " ";
         i++; // Skip the next word as it's already handled
       }
     } else {
       // Standard translation process
-      const translatedWord = translateWord(word, selectedLanguage);
+      const translatedWord = translateWord(word, fromLanguage, toLanguage);
       translatedText += translatedWord + " ";
     }
   }
@@ -136,10 +198,34 @@ function btnClicked() {
   );
 }
 
-function translateWord(word, language) {
+// Modified translateWord function
+function translateWord(word, fromLanguage, toLanguage) {
+  // Check for exact phrase matches in translation data
+  if (translationData[word]) {
+    if (translationData[word][toLanguage]) {
+      return translationData[word][toLanguage];
+    }
+  }
+
+  // If translating to English, reverse lookup is needed
+  if (toLanguage === "English") {
+    return reverseTranslate(word, fromLanguage);
+  }
+
+  // If translating from English, follow the standard process
+  if (fromLanguage === "English") {
+    return standardTranslate(word, toLanguage);
+  }
+
+  // For other translations, reverse translate to English first, then standard translate
+  const englishWord = reverseTranslate(word, fromLanguage);
+  return standardTranslate(englishWord, toLanguage);
+}
+
+function standardTranslate(word, language) {
   // Check for exact matches in translation data first
   if (translationData[word]) {
-    return translationData[word][language];
+    return translationData[word][language] || word; // Use original word if no translation is found
   }
 
   // Check for irregular verbs
@@ -149,6 +235,31 @@ function translateWord(word, language) {
     : rootWord;
 
   return applyCustomSuffix(translatedRootWord, suffix, language);
+}
+
+function reverseTranslate(word, fromLanguage) {
+  // Check for direct matches in translationData
+  for (const englishWord in translationData) {
+    if (translationData[englishWord][fromLanguage] === word) {
+      return englishWord;
+    }
+  }
+
+  // Handle custom suffixes
+  const suffixes = customSuffixes[fromLanguage];
+  for (const suffix in suffixes) {
+    const customSuffix = suffixes[suffix];
+    if (word.endsWith(customSuffix)) {
+      const baseWord = word.slice(0, -customSuffix.length);
+      // Check if the base word exists in the translationData for English
+      if (translationData[baseWord] && translationData[baseWord]["English"]) {
+        return translationData[baseWord]["English"];
+      }
+    }
+  }
+
+  // If no match is found, return the original word
+  return word;
 }
 
 function getRootWordAndSuffix(word) {
@@ -162,6 +273,8 @@ function getRootWordAndSuffix(word) {
     return { rootWord: word.slice(0, -3), suffix: "ing" };
   } else if (word.endsWith("ed")) {
     return { rootWord: word.slice(0, -2), suffix: "ed" };
+  } else if (word.endsWith("d")) {
+    return { rootWord: word.slice(0, -1), suffix: "d" };
   } else if (word.endsWith("s")) {
     return { rootWord: word.slice(0, -1), suffix: "s" };
   } else if (word.endsWith("es")) {
@@ -191,6 +304,90 @@ function applyCustomSuffix(word, suffix, language) {
 // Translation data structure
 
 const translationData = {
+  find: {
+    Jaramah: "deavlaj",
+    Zonrazeh: "deawaj",
+  },
+  discover: {
+    Jaramah: "deavlaj",
+    Zonrazeh: "deawaj",
+  },
+  wandered: {
+    Jaramah: "wotej'iyam",
+    Zonrazeh: "outej'iyam",
+  },
+  such: {
+    Jaramah: "imaj",
+    Zonrazeh: "imaj",
+  },
+  them: {
+    Jaramah: "ooneh",
+    Zonrazeh: "sukeh",
+  },
+  must: {
+    Jaramah: "gahj",
+    Zonrazeh: "ekej",
+  },
+  my: {
+    Jaramah: "sgim",
+    Zonrazeh: "esru",
+  },
+  these: {
+    Jaramah: "inake",
+    Zonrazeh: "siike",
+  },
+  those: {
+    Jaramah: "oonake",
+    Zonrazeh: "suke",
+  },
+  wanderer: {
+    Jaramah: "woteja",
+    Zonrazeh: "outeja",
+  },
+  tonight: {
+    Jaramah: "sorshi",
+    Zonrazeh: "sawshi",
+  },
+  sentonia: {
+    Jaramah: "sentozeh",
+    Zonrazeh: "sentozeh",
+  },
+  senti: {
+    Jaramah: "sentojak",
+    Zonrazeh: "sentojak",
+  },
+  novagallentia: {
+    Jaramah: "shajak gallentos",
+    Zonrazeh: "shajak gallentos",
+  },
+  goat: {
+    Jaramah: "rossi",
+    Zonrazeh: "rossi",
+  },
+  their: {
+    Jaramah: "oonash",
+    Zonrazeh: "suuna",
+  },
+  of: {
+    Jaramah: "ze",
+    Zonrazeh: "zeh",
+  },
+  party: {
+    Jaramah: "jaka",
+    Zonrazeh: "jaka",
+  },
+  today: {
+    Jaramah: "sordeen",
+    Zonrazeh: "sawdyn",
+  },
+  tomorrow: {
+    Jaramah: "joodeen",
+    Zonrazeh: "judyn",
+  },
+  yesterday: {
+    Jaramah: "teldeen",
+    Zonrazeh: "teldyn",
+  },
   bed: {
     Jaramah: "tahkt",
     Zonrazeh: "takt",
