@@ -3,39 +3,123 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Language Translator</title>
+    <title>Sahriya Translator</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
   </head>
 
   <body>
-    <div class="container">
-      <h1>Language Translator</h1>
+    <div class="main-content">
+      <!-- How to Use Section -->
+      <div class="how-to-use-faq">
+        <div class="how-to-use">
+          <h2>How to Use</h2>
+          <ul>
+            <li>Select the language you want to translate from.</li>
+            <li>Select the language you want to translate to.</li>
+            <li>Enter your text in the input box.</li>
+            <li>Click "Translate" to see the translation.</li>
+            <li>The translation and custom script will appear below.</li>
+          </ul>
+        </div>
 
-      <label for="fromLanguage">Translate from:</label>
-      <select id="fromLanguage">
-        <option value="English">English</option>
-        <option value="Jaramah">Jaramah</option>
-        <option value="Zonrazeh">Zonrazeh</option>
-      </select>
+        <!-- FAQ Section -->
+        <div class="faq">
+          <h2>Tips</h2>
+          <ul>
+            <li>
+              Some words won't work unless you use the base word. So instead of
+              "afterwards" try "after"
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      <label for="toLanguage">Translate to:</label>
-      <select id="toLanguage">
-        <option value="English">English</option>
-        <option value="Jaramah">Jaramah</option>
-        <option value="Zonrazeh">Zonrazeh</option>
-      </select>
+      <!-- Translator Section -->
+      <div class="translator">
+        <h1>Sahriya Translator</h1>
 
-      <label for="inputText">Enter text:</label>
-      <textarea id="inputText" rows="4" cols="50"></textarea>
+        <label for="fromLanguage">Translate from:</label>
+        <select id="fromLanguage">
+          <option value="English">English</option>
+          <option value="Jaramah">Jaramah</option>
+          <option value="Zonrazeh">Zonrazeh</option>
+        </select>
 
-      <button onclick="btnClicked()">Translate</button>
+        <label for="toLanguage">Translate to:</label>
+        <select id="toLanguage">
+          <option value="English">English</option>
+          <option value="Jaramah">Jaramah</option>
+          <option value="Zonrazeh">Zonrazeh</option>
+        </select>
 
-      <h2>Translated Text:</h2>
-      <p id="translatedText"></p>
+        <label for="inputText">Enter text:</label>
+        <textarea id="inputText" rows="4" cols="50"></textarea>
 
-      <h2>Text in Custom Script:</h2>
-      <p id="scriptText"></p>
+        <button onclick="btnClicked()">Translate</button>
+
+        <h2>Translated Text:</h2>
+        <div id="translatedText" class="output-box"></div>
+
+        <h2>Text in Custom Script:</h2>
+        <div id="scriptText" class="output-box"></div>
+      </div>
+
+      <!-- Imagery Section -->
+      <div class="imagery">
+        <img src="images/zariyya.png" alt="Imagery related to translation" />
+      </div>
     </div>
+
+    <!-- Spacer -->
+    <div class="spacer"></div>
+
+    <!-- Comments Section -->
+    <div id="comments-container">
+      <h2 class="header2">
+        Have any suggestions or want to share your opinion?
+      </h2>
+      <h2 class="header2">Leave a comment below!</h2>
+      <div id="disqus_thread" class="comments-section"></div>
+    </div>
+
+    <script>
+      var disqus_config = function () {
+        this.page.url = window.location.href;
+        this.page.identifier = window.location.pathname;
+      };
+
+      (function () {
+        var d = document,
+          s = d.createElement("script");
+        s.src = "https://armino.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript
+      >Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript"
+        >comments powered by Disqus.</a
+      ></noscript
+    >
   </body>
 </html>

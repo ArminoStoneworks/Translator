@@ -5,14 +5,68 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.how-to-use-faq {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.how-to-use,
+.faq {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.translator,
+.imagery {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  flex: 1;
+  margin-left: 10px;
+  box-sizing: border-box;
+}
+
+.how-to-use h2,
+.faq h2,
+.header2 {
+  color: #ffffff;
+  text-align: center;
+}
+
+.translator {
+  max-width: 40%;
+}
+
+.imagery img {
+  width: 100%;
+  border-radius: 10px;
 }
 
 h1 {
   text-align: center;
-  color: #b22222;
+  color: #4b3b77;
   margin-bottom: 20px;
 }
 
@@ -35,37 +89,48 @@ button {
   color: #f1f1f1;
 }
 
-.container {
-  max-width: 500px;
-  width: 90%;
-  margin: 20px;
-  padding: 20px;
-  background-color: #1e1e1e;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  text-align: center;
-}
-
 button {
-  background-color: #b22222;
+  background-color: #4b3b77;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #8b1a1a;
+  background-color: #352a55;
 }
 
 h2 {
-  color: #b22222;
+  color: #4b3b77;
   margin-top: 30px;
 }
 
-p {
+.output-box {
   background-color: #3e3e3e;
-  padding: 10px;
+  padding: 15px;
   border-radius: 5px;
   word-wrap: break-word;
   text-align: left;
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.spacer {
+  margin-bottom: 50px;
+}
+
+#comments-container {
+  width: 100%;
+  padding: 20px;
+  background-color: #1e1e1e;
+}
+
+.comments-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #3e3e3e;
+  padding: 15px;
+  border-radius: 5px;
 }

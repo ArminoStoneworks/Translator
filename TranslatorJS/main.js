@@ -8,6 +8,9 @@ const irregularVerbs = {
   slept: "sleeped",
   would: "willed",
   found: "finded",
+  better: "gooder",
+  built: "builded",
+  inventor: "inventer",
 };
 
 const customSuffixes = {
@@ -22,6 +25,8 @@ const customSuffixes = {
     ly: "'ren",
     y: "'el",
     ment: "'raj",
+    er: "'ar",
+    able: "'yuadh",
   },
   Zonrazeh: {
     ing: "'am",
@@ -34,6 +39,8 @@ const customSuffixes = {
     ly: "'ren",
     y: "'el",
     ment: "'raj",
+    er: "'ar",
+    able: "'yuadh",
   },
 };
 
@@ -50,6 +57,11 @@ const languageScript = {
   8: "ʎ",
   9: "੯",
   10: "১·",
+  OO: "𐡐",
+  KH: "ऽ",
+  TH: "𐤇",
+  SH: "𐤉",
+  H: "ʮ",
   A: "Ӄ",
   E: "Ʒ",
   K: "x̄",
@@ -94,10 +106,6 @@ const languageScript = {
   "|": "|",
   "`": "`",
   "~": "~",
-  OO: "𐡐",
-  KH: "ऽ",
-  TH: "𐤇",
-  SH: "𐤉",
 };
 
 // Function to convert text to custom script
@@ -289,6 +297,10 @@ function getRootWordAndSuffix(word) {
     return { rootWord: word.slice(0, -1), suffix: "y" };
   } else if (word.endsWith("ment")) {
     return { rootWord: word.slice(0, -4), suffix: "ment" };
+  } else if (word.endsWith("er")) {
+    return { rootWord: word.slice(0, -2), suffix: "er" };
+  } else if (word.endsWith("able")) {
+    return { rootWord: word.slice(0, -4), suffix: "able" };
   }
 
   return { rootWord: word, suffix: "" };
@@ -304,6 +316,58 @@ function applyCustomSuffix(word, suffix, language) {
 // Translation data structure
 
 const translationData = {
+  invent: {
+    Jaramah: "Germoj",
+    Zonrazeh: "Germoj",
+  },
+  better: {
+    Jaramah: "Gushaesh",
+    Zonrazeh: "Gerejahj",
+  },
+  improve: {
+    Jaramah: "Gerevan",
+    Zonrazeh: "Gerevay",
+  },
+  develop: {
+    Jaramah: "Gerejwan",
+    Zonrazeh: "Gerejahj",
+  },
+  monarch: {
+    Jaramah: "shahesh",
+    Zonrazeh: "shahesh",
+  },
+  monarchy: {
+    Jaramah: "shahmaj",
+    Zonrazeh: "shahmaj",
+  },
+  democracy: {
+    Jaramah: "sanumaj",
+    Zonrazeh: "sanumaj",
+  },
+  theocracy: {
+    Jaramah: "kasashmaj",
+    Zonrazeh: "kasashmaj",
+  },
+  dictator: {
+    Jaramah: "unas",
+    Zonrazeh: "unas",
+  },
+  dictatorship: {
+    Jaramah: "unasmaj",
+    Zonrazeh: "unasmaj",
+  },
+  consistent: {
+    Jaramah: "uyufaja",
+    Zonrazeh: "ihotaf",
+  },
+  by: {
+    Jaramah: "Mo",
+    Zonrazeh: "Moj",
+  },
+  with: {
+    Jaramah: "ewa",
+    Zonrazeh: "ewah",
+  },
   find: {
     Jaramah: "deavlaj",
     Zonrazeh: "deawaj",
@@ -1050,11 +1114,15 @@ const translationData = {
   },
   decade: {
     Jaramah: "jahje",
-    Zonrazeh: "century",
+    Zonrazeh: "jahje",
   },
-  ahanan: {
-    Jaramah: "millenia",
+  millenia: {
+    Jaramah: "sorfor",
     Zonrazeh: "sorfor",
+  },
+  century: {
+    Jaramah: "ahanan",
+    Zonrazeh: "ahanan",
   },
   period: {
     Jaramah: "shakam",
@@ -1065,8 +1133,8 @@ const translationData = {
     Zonrazeh: "baram",
   },
   forever: {
-    Jaramah: "darom",
-    Zonrazeh: "rohsam",
+    Jaramah: "anahanaj",
+    Zonrazeh: "anahanaj",
   },
   never: {
     Jaramah: "zoram",
@@ -5956,13 +6024,9 @@ const translationData = {
     Jaramah: "dal",
     Zonrazeh: "dal",
   },
-  disagreeable: {
+  disagree: {
     Jaramah: "dal",
     Zonrazeh: "dal",
-  },
-  agreeable: {
-    Jaramah: "gov",
-    Zonrazeh: "gov",
   },
   amicable: {
     Jaramah: "gov",
@@ -6960,10 +7024,6 @@ const translationData = {
     Jaramah: "no",
     Zonrazeh: "not",
   },
-  acceptable: {
-    Jaramah: "no",
-    Zonrazeh: "not",
-  },
   probable: {
     Jaramah: "aljes",
     Zonrazeh: "aljes",
@@ -7286,7 +7346,7 @@ const translationData = {
   },
   and: {
     Jaramah: "jo",
-    Zonrazeh: "bak",
+    Zonrazeh: "jo",
   },
   individual: {
     Jaramah: "lehr",
@@ -7584,7 +7644,7 @@ const translationData = {
     Jaramah: "yuu",
     Zonrazeh: "yuu",
   },
-  beingable: {
+  able: {
     Jaramah: "yuadh",
     Zonrazeh: "yuad",
   },
@@ -7597,16 +7657,16 @@ const translationData = {
     Zonrazeh: "ahn",
   },
   nor: {
-    Jaramah: "ovoh",
-    Zonrazeh: "ovo",
+    Jaramah: "ov",
+    Zonrazeh: "uv",
   },
   but: {
     Jaramah: "tek",
-    Zonrazeh: "beg",
+    Zonrazeh: "tek",
   },
   or: {
     Jaramah: "o",
-    Zonrazeh: "o",
+    Zonrazeh: "u",
   },
   yet: {
     Jaramah: "sen",
