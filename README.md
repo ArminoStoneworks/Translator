@@ -1,5 +1,11 @@
 # Version History
 
+Version 2.0 26/08/2025 @ 3:09pm MDT
+
+- Moved translator to a different site
+
+https://arminonetwork.com/ArminoDev/SahriyaTranslator/index.html
+
 Version 1.2 09/08/2024 @ 3:27pm MDT
 
 - Aestetics Change
