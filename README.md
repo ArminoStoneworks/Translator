@@ -1,6 +1,6 @@
 # Version History
 
-Version 2.0 26/08/2025 @ 3:09pm MDT
+Version 2.0 26/08/2024 @ 3:09pm MDT
 
 - Moved translator to a different site
 
